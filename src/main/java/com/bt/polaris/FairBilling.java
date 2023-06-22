@@ -86,7 +86,7 @@ public class FairBilling {
             }
         }
 
-        // Print the report
+        // Prepare the string message to display
         for (String username : sessionCounts.keySet()) {
             int sessionCount = sessionCounts.get(username);
             long sessionDuration = sessionDurations.getOrDefault(username, 0L);
