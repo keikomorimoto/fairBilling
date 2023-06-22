@@ -90,7 +90,7 @@ public class FairBilling {
         for (String username : sessionCounts.keySet()) {
             int sessionCount = sessionCounts.get(username);
             long sessionDuration = sessionDurations.getOrDefault(username, 0L);
-            result += String.format("%s %d %d %n", username, sessionCount, sessionDuration);
+            result += String.format("%s %d %d%n", username, sessionCount, sessionDuration);
         }
 
         return result;
