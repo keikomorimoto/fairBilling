@@ -3,10 +3,8 @@ package com.bt.polaris;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Array;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +32,7 @@ public class FairBilling {
                     continue;
                 }
 
-                String[] record = line.split(" ");
+                String[] record = line.split("\\s+");
                 if (record.length != 3) {
                     continue;
                 }
