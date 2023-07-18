@@ -43,6 +43,10 @@ public class FairBilling {
                 String username = record[1];
                 String status = record[2];
 
+                if (!username.matches("^[a-zA-Z0-9]*$")) { //check single alphanumeric string
+                    continue;
+                }
+
                 try {
                     LocalTime time = LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("HH:mm:ss"));
 

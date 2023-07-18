@@ -2,11 +2,8 @@ package com.bt.polaris;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Stack;
 
