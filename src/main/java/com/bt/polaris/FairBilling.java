@@ -3,26 +3,27 @@ package com.bt.polaris;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Array;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FairBilling {
-
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Please provide the path to the log file as a command line argument.");
             return;
         }
-
         String logFilePath = args[0];
-        String result = processLogFile(logFilePath);
-        System.out.println(result);
+        processLogFile(logFilePath);
     }
 
-    public static String processLogFile(String logFilePath) {
+    public static void processLogFile(String logFilePath) {
         LocalTime earliestTime = null;
         LocalTime latestTime = null;
-        SessionData SessionData = new SessionData();
+        Map<String, PersonSessionData> Users = new HashMap<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(logFilePath))) {
             String line;
@@ -48,21 +49,29 @@ public class FairBilling {
                     if (earliestTime == null) earliestTime = time;
                     if (latestTime == null || time.isAfter(latestTime)) latestTime = time;
 
+                    Users.putIfAbsent(username, new PersonSessionData());
+                    PersonSessionData userData = Users.get(username);
+
                     if (status.equals("Start")) {
-                        SessionData.addStart(username, time);
+                        userData.addStart(time);
                     } else if (status.equals("End")) {
-                        SessionData.addEnd(username, time, earliestTime);
+                        userData.addEnd(time, earliestTime);
                     }
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
             }
         } catch (IOException e) {
             System.out.println("Error reading the log file: " + e.getMessage());
         }
 
-        // When there were START with no matching END
-        SessionData.addExtraStart(latestTime);
+        for (Map.Entry<String, PersonSessionData> user : Users.entrySet()) {
+            String username = user.getKey();
+            PersonSessionData userPersonSessionData = user.getValue();
 
-        return SessionData.formatResult();
+            userPersonSessionData.addExtraStart(latestTime); // When there were START with no matching END
+
+            System.out.println(username + " " + userPersonSessionData.outputResult());
+        }
     }
 }
 
