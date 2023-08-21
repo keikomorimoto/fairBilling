@@ -15,7 +15,7 @@ public class PersonSessionData {
     }
 
     public void addEnd(LocalTime time, LocalTime earliestTime) {
-        if (sessionStacks != null && !sessionStacks.isEmpty()) {
+        if (!sessionStacks.isEmpty()) {
             sessionDurations += Duration.between(sessionStacks.pop(), time).getSeconds();
 
         } else {  // if there is END with no matching Start
